@@ -3,15 +3,18 @@ def pet_shop_name(pet_shop)
     return pet_shop[:name]
 end
 
+
 # Total Cash in pet shop
 def total_cash(pet_shop)
     return pet_shop[:admin][:total_cash]
 end
 
+
 #Add or remove cash
 def add_or_remove_cash(pet_shop, value)
     return pet_shop[:admin][:total_cash] += value
 end
+
 
 # Pets sold
 def pets_sold(pet_shop)
@@ -29,6 +32,7 @@ end
 def stock_count(pet_shop)
  return pet_shop[:pets].size
 end
+
 
 # Find pets by breed
 def pets_by_breed(pet_shop, breed)
@@ -59,30 +63,52 @@ def remove_pet_by_name(pet_shop, pet_name)
     return pet_shop
 end
 
+
 # Add a pet to stock
 def add_pet_to_stock (pet_shop, new_pet)
     return pet_shop[:pets] << new_pet
 end
+
 
 #  Check customers cash
 def customer_cash(customers)
     return customers[:cash]
 end
 
+
 # remove customers cash
 def remove_customer_cash(customers, bill_value)
     return customers[:cash] -= bill_value
 end
+
 
 # calculate customer pet count
 def customer_pet_count(customers)
     return customers[:pets].count
 end
 
+
 # Add pet to customer
 def add_pet_to_customer(customer, new_pet)
     return customer[:pets] << new_pet
 end
 
+
 # ---- OPTIONAL TASKS ---- #
 
+# Can customer afford to buy the pet?
+def customer_can_afford_pet(customer, new_pet)
+ return customer[:cash] >= new_pet[:price]
+end
+
+
+# can we sell the pet to the customer?
+def sell_pet_to_customer(pet_shop, pet, customer)
+    if (pet_shop[:pets].include?(pet) && customer_can_afford_pet(customer, pet))
+        add_pet_to_customer(customer, pet)
+        remove_customer_cash(customer, pet[:price])
+        remove_pet_by_name(pet_shop, pet[:name])
+        add_or_remove_cash(pet_shop, pet[:price])
+        increase_pets_sold(pet_shop, 1)
+    end  
+end
